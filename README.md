@@ -167,5 +167,6 @@ make
 ## 참고
 
 - 원본 프로젝트 설명: `README`
+- 최종 보고서: `report.pdf`
 - 주요 실행 스크립트: `run_demo.sh`
 - 빌드 규칙: `Makefile`
