@@ -1,0 +1,103 @@
+LISP INTERPRETER WITH VECTOR & POLYMORPHISM SUPPORT
+
+Min-Seok Yoon
+December 20, 2025
+
+
+
+1. SYNOPSIS
+
+This project is a custom LISP interpreter implemented in C using Flex and Bison. It supports standard LISP list processing operations (cons, car, cdr) and extends the language with powerful dynamic Vector features.
+
+Key highlights include:
+- A dynamic type system supporting Integers, Characters, Strings, Symbols, Lists, and Vectors.
+- Heterogeneous Vectors: Vectors can store elements of mixed types simultaneously (e.g., [1 "Hello" [2 3]]), similar to Python lists.
+- Python-style Polymorphic Arithmetic: Operators like '+' and '*' adapt to the data type (e.g., string concatenation, vector repetition).
+- Comprehensive Vector Operations: Support for indexing, slicing, pushing, popping, inserting, and deleting elements.
+- Recursive Sorting: A built-in sort function capable of handling nested data structures.
+
+
+
+2. FILES
+
+[Source Codes]
+- main.c       : Entry point of the interpreter and built-in function registration.
+- ast.y        : Bison grammar file defining the syntax and parsing rules.
+- token.l      : Flex lexer file for tokenizing input (supports escape sequences).
+- data.h/c     : Definitions of data structures (Tagged Union) and memory management.
+- env.h/c      : Environment management for variable binding and scoping.
+- eval.h/c     : Core evaluation logic (handling symbols, function calls, and assignments).
+- bop.h/c      : Basic Operations (List ops & Polymorphic arithmetic).
+- vop.h/c      : Vector Operations (Constructors, Accessors, Modifiers).
+
+[Build & Scripts]
+- Makefile     : Build script for compiling the project and managing test routines.
+- run_demo.sh  : Shell script to automate the execution of all test cases.
+- README       : This documentation file.
+
+[Test Samples]
+- test_01_basics_char.lsp : Basic variables, list structures, and character arithmetic.
+- test_02_poly_str.lsp    : Polymorphic string operations and escape sequence tests.
+- test_03_vector_read.lsp : Vector creation, indexing, slicing, and linear search.
+- test_04_vector_write.lsp: Vector modification (Stack operations, Insert/Delete).
+- test_05_adv_sort.lsp    : Advanced recursive sorting and vector arithmetic.
+
+
+
+3. HOW TO BUILD
+
+The project requires GCC, Flex, and Bison. To build the executable 'main':
+
+	$ make
+
+To clean up build artifacts (object files, generated parsers, executables):
+
+	$ make clean
+
+To create a submission archive (zip):
+
+	$ make zip
+
+
+
+4. HOW TO EXECUTE
+
+There are two ways to execute the interpreter:
+
+A. Automated Demo (Recommended)
+You can run all provided test cases sequentially using the automated script.
+This command builds the project (if necessary) and runs 'run_demo.sh'.
+
+	$ make test
+
+B. Manual Execution
+You can manually run specific LISP source files by redirecting the input to the executable.
+
+	$ ./main < test_01_basics_char.lsp
+	$ ./main < test_05_adv_sort.lsp
+
+Alternatively, you can run the interpreter interactively (press Ctrl+D to exit):
+
+	$ ./main
+	(+ 1 2)
+	3
+
+
+
+5. REMARKS
+
+- Polymorphism Implementation:
+  The built-in operators '+' and '*' are designed to be polymorphic.
+  For example, (+ "A" "B") results in "AB", and (* [1] 3) results in [1 1 1].
+  This mimics the behavior of modern scripting languages like Python.
+
+- Vector Implementation:
+  Vectors are implemented as dynamic arrays that automatically resize.
+  Unlike standard C arrays, they support heterogeneous elements, meaning a single vector can hold Integers, Strings, and even other Vectors without conflict.
+
+- Sorting Logic:
+  The 'sort' function uses a custom comparator that adheres to a strict type hierarchy (Nat < Chr < Str < Vec).
+  It recursively compares elements within nested vectors, allowing for complex data sorting.
+
+- String Literals:
+  The lexer (token.l) has been enhanced to correctly handle escape sequences (e.g., \", \n) within string literals, ensuring robust string processing.
